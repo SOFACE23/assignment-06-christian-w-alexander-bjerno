@@ -12,16 +12,18 @@
 #include <iostream>
 #include <string>
 #include <boost/asio.hpp>
+#include <fstream>
+#include <vector>
 
 using boost::asio::ip::tcp;
 
 std::vector<uint8_t> get_image()
 {
   // was on brightspace assignment 6.
-  {
+  
     // open the file:
     std::streampos fileSize;
-    std::ifstream file(filename, std::ios::binary);
+    std::ifstream file("cat.jpg", std::ios::binary);
 
     // get its size:
     file.seekg(0, std::ios::end);
@@ -32,9 +34,7 @@ std::vector<uint8_t> get_image()
     std::vector<uint8_t> fileData(fileSize);
     file.read((char *)&fileData[0], fileSize);
     return fileData;
-  }
-
-  return std::vector<uint8_t>();
+  
 }
 
 int main()
