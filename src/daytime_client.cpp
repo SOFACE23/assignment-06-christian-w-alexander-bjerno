@@ -14,8 +14,10 @@
 
 using boost::asio::ip::tcp;
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
+  // if the program is run with no or more then argument then it will be true
+  // usage tells us how to run proberly
   try
   {
     if (argc != 2)
@@ -28,18 +30,20 @@ int main(int argc, char* argv[])
 
     tcp::resolver resolver(io_context);
     tcp::resolver::results_type endpoints =
-      resolver.resolve(argv[1], "daytime");
+        resolver.resolve(argv[1], "daytime");
 
     tcp::socket socket(io_context);
     boost::asio::connect(socket, endpoints);
 
-    while(true)
+    // only goes forward if true
+    while (true)
     {
       boost::array<char, 128> buf;
       boost::system::error_code error;
 
       size_t len = socket.read_some(boost::asio::buffer(buf), error);
 
+      // test for errors in the system going forward.
       if (error == boost::asio::error::eof)
         break; // Connection closed cleanly by peer.
       else if (error)
@@ -47,8 +51,9 @@ int main(int argc, char* argv[])
 
       std::cout.write(buf.data(), len);
     }
+    // if some mistakes/bugs, has come through in the end.
   }
-  catch (std::exception& e)
+  catch (std::exception &e)
   {
     std::cerr << e.what() << std::endl;
   }
