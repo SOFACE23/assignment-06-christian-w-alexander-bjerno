@@ -11,14 +11,19 @@
 #include <iostream>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <fstream>
 
 using boost::asio::ip::tcp;
 
-constexpr size_t image_size = 100*100;
+constexpr size_t image_size = 17618; //Set image_size to actual images size of 17618 bytes, otherwise we won't get the whole image
 
 void save_image(char* data, size_t len)
 {
-  // TODO
+  // Create a new file and open it
+  std::ofstream newfile("newcat.jpg");
+  //Write the data from the first point until the last determined by the image_size
+  newfile.write(&data[0], len);
+  newfile.close();
 }
 
 int main(int argc, char* argv[])
@@ -42,7 +47,7 @@ int main(int argc, char* argv[])
 
     while(true)
     {
-      boost::array<char, image_size> buf;
+      boost::array<char, image_size> buf; //Creates an array buf the size of image_size to hold the data from the server
       boost::system::error_code error;
 
       // read until buffer is full
@@ -53,7 +58,7 @@ int main(int argc, char* argv[])
       else if (error)
         throw boost::system::system_error(error); // Some other error.
 
-      save_image(buf.data(),image_size);
+      save_image(buf.data(),image_size); //runs the save_image function with the data from the server and the image_size manually set
     }
   }
   catch (std::exception& e)

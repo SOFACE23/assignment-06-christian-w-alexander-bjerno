@@ -48,12 +48,13 @@ int main()
     while (true)
     {
       tcp::socket socket(io_context);
-      acceptor.accept(socket);
+      acceptor.accept(socket); //Accepts the connection
 
-      auto message = get_image();
+      auto message = get_image(); //Runs the get_image function which returns the binary data into message
 
       boost::system::error_code ignored_error;
-      boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
+      boost::asio::write(socket, boost::asio::buffer(message), ignored_error); //Writes to the client the data in message
+      
     }
   }
   catch (std::exception &e)
